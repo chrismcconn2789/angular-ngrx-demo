@@ -1,0 +1,26 @@
+.popover {
+    background-color: #ffffff;
+    padding: 16px;
+    border-radius: 10px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0px 3px 15px rgba(0, 0, 0, 0.2);
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #dc2625;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-weight: 500;
+    font-size: 16px;
+    cursor: pointer;
+    max-width: fit-content;
+}
+
+button:hover {
+    opacity: 70%;
+}
