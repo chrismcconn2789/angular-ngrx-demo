@@ -82,3 +82,8 @@ p {
 .chevron {
     margin-right: 2px;
 }
+
+.spinner {
+    align-self: center;
+    margin-top: 24px;
+}
