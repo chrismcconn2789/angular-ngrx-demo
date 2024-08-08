@@ -1,44 +1,41 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
-  DestroyRef,
   EventEmitter,
   Input,
   OnInit,
   Output,
   inject,
-} from "@angular/core";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { Store } from "@ngrx/store";
-import { Post } from "../services/backend-api.service";
-import { PostState } from "../store/posts.reducer";
-import { selectPostById } from "../store/posts.selectors";
-import { CommonModule } from "@angular/common";
+} from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
+import { Post } from '../services/backend-api.service';
+import { PostState } from '../store/posts.reducer';
+import { selectPostById } from '../store/posts.selectors';
 
 @Component({
-  selector: "app-post",
+  selector: 'app-post',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: "./post.component.html",
-  styleUrl: "./post.component.css",
+  templateUrl: './post.component.html',
+  styleUrl: './post.component.css',
 })
 export class PostComponent implements OnInit {
-  private readonly postStore = inject(Store<PostState>);
-  private readonly destroyRef = inject(DestroyRef);
-  @Input() postId: string;
+  protected readonly postStore = inject(Store<PostState>);
+  protected post$ = new Observable<Post | undefined>();
+
+  @Input() postId: string | undefined;
 
   @Output() postClosed = new EventEmitter();
 
-  public post: Post | undefined;
-
   ngOnInit(): void {
-    this.postStore
-      .select(selectPostById(this.postId))
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((post) => (this.post = post));
+    if (this.postId) {
+      this.post$ = this.postStore.select(selectPostById(this.postId));
+    }
   }
 
   public setNoPost(): void {
-    this.post = undefined;
+    this.post$ = of(undefined);
     this.postClosed.emit();
   }
 }
