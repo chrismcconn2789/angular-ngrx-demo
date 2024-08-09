@@ -6,7 +6,6 @@ import { Observable, of } from 'rxjs';
 import { PostComponent } from './post/post.component';
 import { Post } from './services/backend-api.service';
 import { getPosts } from './store/posts.actions';
-import { PostState } from './store/posts.reducer';
 import { loading, selectPostById, selectPosts } from './store/posts.selectors';
 
 @Component({
@@ -17,17 +16,17 @@ import { loading, selectPostById, selectPosts } from './store/posts.selectors';
   styleUrl: './app.component.css',
 })
 export class AppComponent implements OnInit {
-  protected readonly postStore = inject(Store<PostState>);
-  protected readonly posts$ = this.postStore.select(selectPosts);
-  protected readonly loading$ = this.postStore.select(loading);
+  protected readonly store = inject(Store);
+  protected readonly posts$ = this.store.select(selectPosts);
+  protected readonly loading$ = this.store.select(loading);
   protected activePost$ = new Observable<Post | undefined>();
 
   ngOnInit(): void {
-    this.postStore.dispatch(getPosts());
+    this.store.dispatch(getPosts());
   }
 
   public showPost(id: string) {
-    this.activePost$ = this.postStore.select(selectPostById(id));
+    this.activePost$ = this.store.select(selectPostById(id));
   }
 
   public postClosed(): void {

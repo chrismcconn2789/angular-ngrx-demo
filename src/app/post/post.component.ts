@@ -10,7 +10,6 @@ import {
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { Post } from '../services/backend-api.service';
-import { PostState } from '../store/posts.reducer';
 import { selectPostById } from '../store/posts.selectors';
 
 @Component({
@@ -21,7 +20,7 @@ import { selectPostById } from '../store/posts.selectors';
   styleUrl: './post.component.css',
 })
 export class PostComponent implements OnInit {
-  protected readonly postStore = inject(Store<PostState>);
+  protected readonly store = inject(Store);
   protected post$ = new Observable<Post | undefined>();
 
   @Input() postId: string | undefined;
@@ -30,7 +29,7 @@ export class PostComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.postId) {
-      this.post$ = this.postStore.select(selectPostById(this.postId));
+      this.post$ = this.store.select(selectPostById(this.postId));
     }
   }
 
