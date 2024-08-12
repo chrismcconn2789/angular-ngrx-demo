@@ -3,6 +3,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
+import { AngularLogoComponent } from './components/angular-logo/angular-logo.component';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 import { PostComponent } from './post/post.component';
 import { Post } from './services/backend-api.service';
 import { getPosts } from './store/posts.actions';
@@ -11,7 +13,13 @@ import { loading, selectPostById, selectPosts } from './store/posts.selectors';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, PostComponent, CommonModule],
+  imports: [
+    RouterOutlet,
+    PostComponent,
+    CommonModule,
+    AngularLogoComponent,
+    LoadingSpinnerComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
