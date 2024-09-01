@@ -2,7 +2,7 @@
 <div class="popover">
   <h3>{{ post.title | titlecase }}</h3>
   <p>
-    {{ post.body.charAt(0).toUpperCase() + post.body.slice(1)! }}
+    {{ post.body.charAt(0).toUpperCase() + post.body.slice(1) }}
   </p>
   <button (click)="setNoPost()">Close</button>
 </div>

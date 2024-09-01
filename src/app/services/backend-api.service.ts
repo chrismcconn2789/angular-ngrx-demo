@@ -1,6 +1,6 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 export type Post = {
   userId: string;
@@ -10,14 +10,13 @@ export type Post = {
 };
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class BackendApiService {
-  private baseUrl: string =
-    "https://jsonplaceholder.typicode.com/posts?_page=1";
-  constructor(private httpClient: HttpClient) {}
+  private readonly postsUrl = 'https://jsonplaceholder.typicode.com/posts';
+  private readonly httpClient = inject(HttpClient);
 
   public getAll(): Observable<Post[]> {
-    return this.httpClient.get<Post[]>(this.baseUrl);
+    return this.httpClient.get<Post[]>(this.postsUrl);
   }
 }
