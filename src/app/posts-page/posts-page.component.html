@@ -1,0 +1,80 @@
+@if (viewModel$ | async; as vm) {
+  <div class="wrapper">
+    @if (vm.activePostId) {
+      <div class="backdrop" aria-hidden="true" (click)="closePost()"></div>
+      <app-post
+        class="modal"
+        [post]="vm.activePost ?? null"
+        [loading]="vm.loading"
+        (postClosed)="closePost()"
+      />
+    }
+
+    <div
+      class="content-container"
+      [class.dimmed]="!!vm.activePostId"
+      [attr.inert]="vm.activePostId ? '' : null"
+    >
+      <div class="title-wrapper">
+        <app-angular-logo />
+        <h1 id="page-title" tabindex="-1">Angular - NgRx Demo</h1>
+      </div>
+      <h2>Latest posts</h2>
+
+      @if (vm.error) {
+        <section class="error-banner" aria-live="assertive" role="alert">
+          <div>
+            <h3>We could not load posts.</h3>
+            <p>{{ vm.error.message }}</p>
+          </div>
+          <button type="button" class="secondary-button" (click)="retryLoad()">
+            Retry
+          </button>
+        </section>
+      }
+
+      @if (vm.loading) {
+        <app-loading-spinner class="spinner" />
+      } @else if (vm.posts.length === 0) {
+        <section class="empty-state">
+          <h3>No posts found</h3>
+          <p>There are no posts to display right now.</p>
+        </section>
+      } @else {
+        <div class="post-list">
+          @for (post of vm.posts; track trackByPostId($index, post)) {
+            <article class="post-list-item">
+              <button
+                type="button"
+                class="post-trigger"
+                [attr.aria-expanded]="vm.activePostId === post.id.toString()"
+                aria-haspopup="dialog"
+                (click)="openPost(post.id, $event)"
+              >
+                {{ post.title | titlecase }}
+              </button>
+              <p class="post-preview">
+                <span class="chevron" aria-hidden="true">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="4"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M8 4l8 8-8 8" />
+                  </svg>
+                </span>
+                {{ post.body.charAt(0).toUpperCase() + post.body.slice(1) }}
+              </p>
+            </article>
+          }
+        </div>
+      }
+    </div>
+  </div>
+}

@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import type { Post } from '../services/backend-api.service';
+import type { LoadError } from './posts.models';
 
 export const getPosts = createAction('[Posts] Get Posts');
 
@@ -10,5 +11,5 @@ export const getPostsSuccess = createAction(
 
 export const getPostsFailure = createAction(
   '[Posts] Get Posts Failure',
-  props<{ error: string }>()
+  props<{ error: LoadError }>()
 );

@@ -1,19 +1,19 @@
 import {
   ApplicationConfig,
-  ImportProvidersSource,
   importProvidersFrom,
   provideZoneChangeDetection,
-} from "@angular/core";
-import { provideRouter } from "@angular/router";
+} from '@angular/core';
+import { provideRouter } from '@angular/router';
 
-import { StoreModule } from "@ngrx/store";
-import { provideStoreDevtools } from "@ngrx/store-devtools";
-import { routes } from "./app.routes";
+import { provideHttpClient, withFetch } from '@angular/common/http';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
+import { routes } from './app.routes';
+import { PostEffects } from './store/posts.effects';
+import { postsReducer } from './store/posts.reducer';
 
-import { provideHttpClient, withFetch } from "@angular/common/http";
-import { EffectsModule } from "@ngrx/effects";
-import { PostEffects } from "./store/posts.effects";
-import { postsReducer } from "./store/posts.reducer";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
       EffectsModule.forRoot(),
       EffectsModule.forFeature(PostEffects),
     ),
-    provideStoreDevtools({ maxAge: 25 }),
     provideHttpClient(withFetch()),
+    ...(!environment.production ? [provideStoreDevtools({ maxAge: 25 })] : []),
   ],
 };

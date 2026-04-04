@@ -1,16 +1,15 @@
 import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
-  OnInit,
   Output,
-  inject,
+  ViewChild,
+  HostListener,
 } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
 import { Post } from '../services/backend-api.service';
-import { selectPostById } from '../store/posts.selectors';
 
 @Component({
   selector: 'app-post',
@@ -19,22 +18,30 @@ import { selectPostById } from '../store/posts.selectors';
   templateUrl: './post.component.html',
   styleUrl: './post.component.css',
 })
-export class PostComponent implements OnInit {
-  protected readonly store = inject(Store);
-  protected post$ = new Observable<Post | undefined>();
+export class PostComponent implements AfterViewInit {
+  @Input() post: Post | null = null;
+  @Input() loading = false;
 
-  @Input() postId: string | undefined;
+  @Output() postClosed = new EventEmitter<void>();
 
-  @Output() postClosed = new EventEmitter();
+  @ViewChild('closeButton')
+  private closeButton?: ElementRef<HTMLButtonElement>;
 
-  ngOnInit(): void {
-    if (this.postId) {
-      this.post$ = this.store.select(selectPostById(this.postId));
-    }
+  protected readonly titleId = 'post-dialog-title';
+  protected readonly bodyId = 'post-dialog-body';
+
+  ngAfterViewInit(): void {
+    queueMicrotask(() => {
+      this.closeButton?.nativeElement.focus();
+    });
   }
 
-  public setNoPost(): void {
-    this.post$ = of(undefined);
+  @HostListener('document:keydown.escape')
+  protected handleEscapeKey(): void {
+    this.close();
+  }
+
+  protected close(): void {
     this.postClosed.emit();
   }
 }

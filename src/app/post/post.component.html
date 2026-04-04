@@ -1,9 +1,30 @@
-@if (post$ | async; as post) {
-<div class="popover">
-  <h3>{{ post.title | titlecase }}</h3>
-  <p>
-    {{ post.body.charAt(0).toUpperCase() + post.body.slice(1) }}
-  </p>
-  <button (click)="setNoPost()">Close</button>
-</div>
-}
+<section
+  class="popover"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="titleId"
+  [attr.aria-describedby]="bodyId"
+>
+  <button
+    #closeButton
+    type="button"
+    class="close-button"
+    (click)="close()"
+    aria-label="Close post details"
+  >
+    Close
+  </button>
+
+  @if (post) {
+    <h2 [id]="titleId">{{ post.title | titlecase }}</h2>
+    <p [id]="bodyId">
+      {{ post.body.charAt(0).toUpperCase() + post.body.slice(1) }}
+    </p>
+  } @else if (loading) {
+    <h2 [id]="titleId">Loading post</h2>
+    <p [id]="bodyId">Loading the selected post details.</p>
+  } @else {
+    <h2 [id]="titleId">Post not found</h2>
+    <p [id]="bodyId">The requested post could not be found.</p>
+  }
+</section>

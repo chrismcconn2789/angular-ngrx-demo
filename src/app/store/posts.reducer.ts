@@ -1,45 +1,48 @@
-import { createReducer, on } from "@ngrx/store";
-import type { Post } from "../services/backend-api.service";
-import { getPosts, getPostsFailure, getPostsSuccess } from "./posts.actions";
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { createReducer, on } from '@ngrx/store';
+import type { Post } from '../services/backend-api.service';
+import { getPosts, getPostsFailure, getPostsSuccess } from './posts.actions';
+import type { LoadError } from './posts.models';
 
-export type PostState = {
-  posts: Post[];
-  error: string;
+export type PostsState = EntityState<Post> & {
+  error: LoadError | null;
   loading: boolean;
 };
 
-export const initialState: PostState = {
-  error: "",
-  posts: [],
+export const postsAdapter = createEntityAdapter<Post>({
+  selectId: (post) => post.id.toString(),
+});
+
+export const initialState: PostsState = postsAdapter.getInitialState({
+  error: null,
   loading: false,
-};
+});
 
 export const postsReducer = createReducer(
   initialState,
   on(
     getPosts,
-    (state) =>
-      (state = {
-        ...state,
-        loading: true,
-      }),
+    (state) => ({
+      ...state,
+      loading: true,
+      error: null,
+    }),
   ),
   on(
     getPostsSuccess,
     (state, action) =>
-      (state = {
+      postsAdapter.setAll(action.posts, {
         ...state,
-        posts: action.posts,
         loading: false,
+        error: null,
       }),
   ),
   on(
     getPostsFailure,
-    (state, action) =>
-      (state = {
-        ...state,
-        error: action.error,
-        loading: false,
-      }),
+    (state, action) => ({
+      ...state,
+      error: action.error,
+      loading: false,
+    }),
   ),
 );

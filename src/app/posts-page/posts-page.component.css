@@ -1,0 +1,158 @@
+.wrapper {
+  padding: 24px;
+  padding-bottom: 48px;
+  font-family: 'GeistSans', 'Arial', sans-serif;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: opacity 120ms ease;
+}
+
+.dimmed {
+  opacity: 0.08;
+  pointer-events: none;
+  user-select: none;
+}
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 9, 11, 0.45);
+  z-index: 1000;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.title-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+h1 {
+  font-family: 'GeistSans', 'Arial', sans-serif;
+  color: #dd0032;
+  font-size: 28px;
+}
+
+h2,
+h3 {
+  color: #09090b;
+}
+
+h2 {
+  color: #746e7c;
+  font-size: 20px;
+}
+
+p {
+  color: #52525b;
+  line-height: 1.5;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.post-list-item {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 10px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+  background: #fff;
+}
+
+.post-trigger {
+  border: 0;
+  padding: 0;
+  background: none;
+  color: #09090b;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.post-trigger:hover,
+.post-trigger:focus-visible {
+  text-decoration: underline;
+}
+
+.post-preview {
+  display: flex;
+  align-items: flex-start;
+}
+
+.chevron {
+  display: inline-flex;
+  margin-right: 4px;
+  color: #dd0032;
+  margin-top: 3px;
+}
+
+.error-banner,
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-radius: 10px;
+  padding: 16px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+}
+
+.empty-state {
+  background: #fafafa;
+  border-color: #e4e4e7;
+}
+
+.secondary-button {
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: none;
+  background-color: #dd0032;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secondary-button:hover,
+.secondary-button:focus-visible {
+  opacity: 0.85;
+}
+
+@media (max-width: 640px) {
+  .wrapper {
+    padding: 16px;
+    padding-bottom: 32px;
+  }
+
+  .modal {
+    padding: 16px;
+  }
+
+  .error-banner,
+  .empty-state {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
